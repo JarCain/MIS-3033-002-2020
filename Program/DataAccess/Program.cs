@@ -32,7 +32,8 @@ namespace DataAccess
 
             result = Add(allTheNumbers);
             Console.WriteLine(result);
-            
+
+            DatabaseStuff();
 
             Console.ReadKey();
         }
@@ -69,6 +70,37 @@ namespace DataAccess
         static double Subtract(double val1, double val2)
         {
             return val1 - val2;
+        }
+
+        static void DatabaseStuff()
+        {
+            string connectionString = "";
+            using (var connection = new SqlConnection())
+            {
+                connection.ConnectionString = connectionString;
+                connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT " +
+                        "FirstName," +
+                        "LastName," +
+                        "Email," +
+                        "Gender," +
+                        "Address," +
+                        "City," +
+                        "State," +
+                        "ZipCode" +
+                        "FROM Customer";
+                    using (var reader = commandExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine(reader[0].ToDtring());
+                        }
+                    }
+                }
+            }
         }
     }
 }
